@@ -4,7 +4,7 @@ import { requestAnimFrame, setFPS } from 'components/Utils'
 
 const WIDTH = 100
 const HEIGHT = 100
-const particles = Array.from(Array(WIDTH), () => new Array(HEIGHT))
+window.particles = Array.from(Array(WIDTH), () => new Array(HEIGHT))
 const { canvas, ctx } = createCanvas()
 var lastTime;
 
@@ -15,7 +15,6 @@ const init = () => {
     main()
 }
 
-
 const main = () => {
     var now = Date.now()
     var dt = (now - lastTime)
@@ -23,7 +22,7 @@ const main = () => {
     setFPS(dt)
     update(dt)
     render()
-    generateRandomImage()
+    updateParticles()
 
     lastTime = now
     requestAnimFrame(main)
@@ -54,20 +53,34 @@ const generateRandomImage = () => {
         }
     }
 
+    convertParticlesToImage()
+}
+
+const convertParticlesToImage = () => {
     const imageDataArray = new Uint8ClampedArray(WIDTH * HEIGHT * 4)
 
     for (let x = 0, i = 0; x < WIDTH; x++) {
         for (let y = 0; y < HEIGHT; y++, i += 4) {
-            const particle = particles[x][y]
-            imageDataArray[i] = particle.r
-            imageDataArray[i + 1] = particle.b
-            imageDataArray[i + 2] = particle.g
-            imageDataArray[i + 3] = particle.a
+            let { r, g, b, a } = window.particles[x][y].getColorData()
+            imageDataArray[i] = r
+            imageDataArray[i + 1] = g
+            imageDataArray[i + 2] = b
+            imageDataArray[i + 3] = a
         }
     }
 
     const imageData = new ImageData(imageDataArray, WIDTH, HEIGHT)
     ctx.putImageData(imageData, 0, 0)
+}
+
+const updateParticles = () => {
+
+    for (let x = WIDTH - 1 ; x > 0; x--) {
+        for (let y = HEIGHT - 1; y > 0; y--) {
+            window.particles[x][y].update(x, y)
+        }
+    }
+    convertParticlesToImage()
 }
 
 init()

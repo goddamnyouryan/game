@@ -1,22 +1,17 @@
 class Particle {
   constructor(type) {
-      this.type = type;
-      const colorData = this.getColorData(type)
-      this.r = colorData.r
-      this.g = colorData.g
-      this.b = colorData.b
-      this.a = colorData.a
+    this.type = type
   }
 
-  getColorData(type) {
-      if (type == 'sand') {
+  getColorData() {
+      if (this.type == 'sand') {
           return {
-              r: '255',
-              g: '255',
+              r: '0',
+              g: '0',
               b: '0',
               a: '255',
           }
-      } else if (type == 'empty') {
+      } else if (this.type == 'empty') {
           return {
               r: '255',
               g: '255',
@@ -24,6 +19,27 @@ class Particle {
               a: '255',
           }
       }
+  }
+
+  update(x, y) {
+    if (this.get('type') == 'empty') {
+      return
+    } else if (this.get('type') == 'sand') {
+      if (x + 1 >= 99 || y >= 99) { return }
+
+      if (window.particles[x + 1][y].get('type') == 'empty') {
+        window.particles[x + 1][y].set('type', 'sand')
+        this.set('type', 'empty')
+      }
+    }
+  }
+
+  set(attr, val) {
+    this[attr] = val
+  }
+
+  get(attr) {
+    return this[attr]
   }
 }
 

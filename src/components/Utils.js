@@ -10,5 +10,5 @@ export const requestAnimFrame = (function(){
 })();
 
 export const setFPS = (dt) => {
-  //console.log(dt)
+  //console.log("FPS:", 1.0 / (dt / 1000.0))
 }

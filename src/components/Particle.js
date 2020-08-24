@@ -1,3 +1,5 @@
+import { WIDTH, HEIGHT } from 'components/constants'
+
 class Particle {
   constructor(type) {
     this.type = type
@@ -25,7 +27,7 @@ class Particle {
     if (this.get('type') == 'empty') {
       return
     } else if (this.get('type') == 'sand') {
-      if (x + 1 >= 99 || y >= 99) { return }
+      if (x + 1 >= WIDTH - 1 || y + 1 >= HEIGHT - 1) { return }
 
       if (window.particles[x + 1][y].get('type') == 'empty') {
         window.particles[x + 1][y].set('type', 'sand')

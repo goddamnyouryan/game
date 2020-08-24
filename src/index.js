@@ -1,9 +1,8 @@
 import createCanvas from 'components/Canvas'
 import Particle from 'components/Particle'
 import { requestAnimFrame, setFPS } from 'components/Utils'
+import { WIDTH, HEIGHT } from 'components/constants'
 
-const WIDTH = 100
-const HEIGHT = 100
 window.particles = Array.from(Array(WIDTH), () => new Array(HEIGHT))
 const { canvas, ctx } = createCanvas()
 var lastTime;

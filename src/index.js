@@ -3,6 +3,8 @@ import Particle from 'components/Particle'
 import { requestAnimFrame, setFPS } from 'components/Utils'
 import { WIDTH, HEIGHT } from 'components/constants'
 
+import './style.css';
+
 window.particles = Array.from(Array(WIDTH), () => new Array(HEIGHT))
 const { canvas, ctx } = createCanvas()
 var lastTime;

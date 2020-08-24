@@ -58,19 +58,25 @@ const generateRandomImage = () => {
 }
 
 const convertParticlesToImage = () => {
-    const imageDataArray = new Uint8ClampedArray(WIDTH * HEIGHT * 4)
+    // from here: https://hacks.mozilla.org/2011/12/faster-canvas-pixel-manipulation-with-typed-arrays/
+    // and here: http://bl.ocks.org/biovisualize/5400576
+    var imageData = ctx.getImageData(0, 0, WIDTH, HEIGHT)
+    var buf = new ArrayBuffer(imageData.data.length)
+    var buf8 = new Uint8ClampedArray(buf)
+    var data = new Uint32Array(buf)
 
-    for (let x = 0, i = 0; x < WIDTH; x++) {
-        for (let y = 0; y < HEIGHT; y++, i += 4) {
-            let { r, g, b, a } = window.particles[x][y].getColorData()
-            imageDataArray[i] = r
-            imageDataArray[i + 1] = g
-            imageDataArray[i + 2] = b
-            imageDataArray[i + 3] = a
+    for (let x = 0; x < WIDTH; x++) {
+        for (let y = 0; y < HEIGHT; y++) {
+            var value = window.particles[y][x].getColorData()
+            data[y * WIDTH + x] =
+                (255   << 24) |
+                (value/2 << 16) |
+                (value <<  8) |
+                255;
         }
     }
 
-    const imageData = new ImageData(imageDataArray, WIDTH, HEIGHT)
+    imageData.data.set(buf8);
     ctx.putImageData(imageData, 0, 0)
 }
 

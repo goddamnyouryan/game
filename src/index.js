@@ -74,8 +74,8 @@ const convertParticlesToImage = () => {
 
 const updateParticles = () => {
 
-    for (let x = WIDTH - 1 ; x > 0; x--) {
-        for (let y = HEIGHT - 1; y > 0; y--) {
+    for (let x = WIDTH - 1 ; x >= 0; x--) {
+        for (let y = HEIGHT - 1; y >= 0; y--) {
             window.particles[x][y].update(x, y)
         }
     }

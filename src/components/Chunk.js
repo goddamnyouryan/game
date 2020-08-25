@@ -8,6 +8,10 @@ class Chunk {
     this.map = map
     this.particles = Array.from(Array(CHUNK_WIDTH), () => new Array(CHUNK_HEIGHT))
 
+    this.setupParticles()
+  }
+
+  setupParticles() {
     for (var x = 0; x < CHUNK_WIDTH; x++) {
       for (var y = 0; y < CHUNK_HEIGHT; y++) {
         const type = (Math.random() >= 0.5) ? 'sand' : 'empty';

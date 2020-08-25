@@ -22,11 +22,11 @@ class Particle {
   }
 
   updateSand(x, y, particles, chunk) {
-    if (x + 1 >= CHUNK_WIDTH || y > CHUNK_HEIGHT) {
-      const nextXChunk = chunk.neighbor(1, 0)
-      if (nextXChunk) {
-        if (nextXChunk.particles[0][y].get('type') == 'empty') {
-          nextXChunk.particles[0][y].set('type', 'sand')
+    if (x + 1 >= CHUNK_WIDTH) {
+      const nextYChunk = chunk.neighbor(0, 1)
+      if (nextYChunk) {
+        if (nextYChunk.particles[0][y].get('type') == 'empty') {
+          nextYChunk.particles[0][y].set('type', 'sand')
           this.set('type', 'empty')
         }
         return

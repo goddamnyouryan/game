@@ -19,23 +19,6 @@ class MapGenerator {
     return this
   }
 
-  update() {
-    for (let x = this.numChunksX - 1 ; x >= 0; x--) {
-        for (let y = this.numChunksY - 1; y >= 0; y--) {
-            this.chunks[x][y].update(x, y, this.chunks)
-        }
-      }
-  }
-
-  getParticle(x, y) {
-    const chunkX = Math.floor(x / CHUNK_WIDTH)
-    const chunkY = Math.floor(y / CHUNK_HEIGHT)
-    const relativeX = x - (chunkX * CHUNK_WIDTH)
-    const relativeY = y - (chunkY * CHUNK_HEIGHT)
-
-    return this.chunks[chunkX][chunkY].particles[relativeX][relativeY]
-  }
-
   getChunk(x, y) {
     const row = this.chunks[x]
 

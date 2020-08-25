@@ -9,6 +9,6 @@ export const requestAnimFrame = (function(){
       };
 })();
 
-export const setFPS = (dt) => {
-  //console.log("FPS:", 1.0 / (dt / 1000.0))
+export const setFPS = (dt, el) => {
+  el.innerText = Math.round(1.0 / (dt / 1000.0))
 }

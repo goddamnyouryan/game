@@ -1,0 +1,27 @@
+import { CHUNK_WIDTH, CHUNK_HEIGHT } from './constants'
+import Particle from './Particle'
+
+class Chunk {
+  constructor(x, y) {
+    this.x = x
+    this.y = y
+    this.particles = Array.from(Array(CHUNK_WIDTH), () => new Array(CHUNK_HEIGHT))
+
+    for (var x = 0; x < CHUNK_WIDTH; x++) {
+      for (var y = 0; y < CHUNK_HEIGHT; y++) {
+        const type = (Math.random() >= 0.5) ? 'sand' : 'empty';
+        this.particles[x][y] = new Particle(type)
+      }
+    }
+  }
+
+  update(chunkX, chunkY, chunks) {
+    for (let x = CHUNK_WIDTH - 1 ; x >= 0; x--) {
+      for (let y = CHUNK_HEIGHT - 1; y >= 0; y--) {
+          this.particles[x][y].update(x, y, this.particles)
+      }
+    }
+  }
+}
+
+export default Chunk

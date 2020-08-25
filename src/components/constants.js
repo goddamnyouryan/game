@@ -1,2 +1,2 @@
-export const WIDTH = 100
-export const HEIGHT = 100
+export const CHUNK_WIDTH = 64
+export const CHUNK_HEIGHT = 64

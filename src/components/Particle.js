@@ -1,11 +1,11 @@
-import { WIDTH, HEIGHT } from 'components/constants'
+import { CHUNK_WIDTH, CHUNK_HEIGHT } from 'components/constants'
 
 class Particle {
   constructor(type) {
     this.type = type
   }
 
-  getColorData() {
+  getColor() {
       if (this.type == 'sand') {
           return 16776960
       } else if (this.type == 'empty') {
@@ -13,14 +13,14 @@ class Particle {
       }
   }
 
-  update(x, y) {
+  update(x, y, particles) {
     if (this.get('type') == 'empty') {
       return
     } else if (this.get('type') == 'sand') {
-      if (x + 1 >= WIDTH || y > HEIGHT) { return }
+      if (x + 1 >= CHUNK_WIDTH || y > CHUNK_HEIGHT) { return }
 
-      if (window.particles[x + 1][y].get('type') == 'empty') {
-        window.particles[x + 1][y].set('type', 'sand')
+      if (particles[x + 1][y].get('type') == 'empty') {
+        particles[x + 1][y].set('type', 'sand')
         this.set('type', 'empty')
       }
     }

@@ -1,26 +1,33 @@
 import createCanvas from 'components/Canvas'
-import Particle from 'components/Particle'
+import MapGenerator from 'components/MapGenerator'
 import { requestAnimFrame, setFPS } from 'components/Utils'
-import { WIDTH, HEIGHT } from 'components/constants'
+import { CHUNK_WIDTH, CHUNK_HEIGHT } from 'components/constants'
 
 import './style.css';
 
-window.particles = Array.from(Array(WIDTH), () => new Array(HEIGHT))
 const { canvas, ctx } = createCanvas()
 var lastTime;
+var map
+const fps = document.createElement('div')
 
 const init = () => {
-    generateRandomImage()
+    map = new MapGenerator
+    addFPS()
 
     lastTime = Date.now()
     main()
+}
+
+const addFPS = () => {
+    fps.classList.add('fps')
+    document.body.append(fps)
 }
 
 const main = () => {
     var now = Date.now()
     var dt = (now - lastTime)
 
-    setFPS(dt)
+    setFPS(dt, fps)
     update(dt)
     render()
     updateParticles()
@@ -46,29 +53,20 @@ const render = () => {
     //console.log('render')
 }
 
-const generateRandomImage = () => {
-    for (var x = 0; x < WIDTH; x++) {
-        for (var y = 0; y < HEIGHT; y++) {
-            const type = (Math.random() >= 0.5) ? 'sand' : 'empty';
-            particles[x][y] = new Particle(type)
-        }
-    }
-
-    convertParticlesToImage()
-}
-
 const convertParticlesToImage = () => {
     // from here: https://hacks.mozilla.org/2011/12/faster-canvas-pixel-manipulation-with-typed-arrays/
     // and here: http://bl.ocks.org/biovisualize/5400576
-    var imageData = ctx.getImageData(0, 0, WIDTH, HEIGHT)
+    var globalWidth = CHUNK_WIDTH * map.numChunksX
+    var globalHeight = CHUNK_HEIGHT * map.numChunksY
+    var imageData = ctx.getImageData(0, 0, globalWidth, globalHeight)
     var buf = new ArrayBuffer(imageData.data.length)
     var buf8 = new Uint8ClampedArray(buf)
     var data = new Uint32Array(buf)
 
-    for (let x = 0; x < WIDTH; x++) {
-        for (let y = 0; y < HEIGHT; y++) {
-            var value = window.particles[y][x].getColorData()
-            data[y * WIDTH + x] =
+    for (let x = 0; x < globalWidth; x++) {
+        for (let y = 0; y < globalHeight; y++) {
+            var value = map.getParticle(y, x).getColor()
+            data[y * globalWidth + x] =
                 (255   << 24) |
                 (value/2 << 16) |
                 (value <<  8) |
@@ -81,12 +79,8 @@ const convertParticlesToImage = () => {
 }
 
 const updateParticles = () => {
+    map.update()
 
-    for (let x = WIDTH - 1 ; x >= 0; x--) {
-        for (let y = HEIGHT - 1; y >= 0; y--) {
-            window.particles[x][y].update(x, y)
-        }
-    }
     convertParticlesToImage()
 }
 

@@ -6,23 +6,39 @@ class Particle {
   }
 
   getColor() {
-      if (this.type == 'sand') {
-          return 16776960
-      } else if (this.type == 'empty') {
-          return 16777215
-      }
+    if (this.type == 'sand') {
+        return 16776960
+    } else if (this.type == 'empty') {
+        return 16777215
+    }
   }
 
-  update(x, y, particles) {
+  update(x, y, particles, chunk) {
     if (this.get('type') == 'empty') {
       return
     } else if (this.get('type') == 'sand') {
-      if (x + 1 >= CHUNK_WIDTH || y > CHUNK_HEIGHT) { return }
+      this.updateSand(x, y, particles, chunk)
+    }
+  }
 
-      if (particles[x + 1][y].get('type') == 'empty') {
-        particles[x + 1][y].set('type', 'sand')
-        this.set('type', 'empty')
+  updateSand(x, y, particles, chunk) {
+    if (x + 1 >= CHUNK_WIDTH || y > CHUNK_HEIGHT) {
+      const nextXChunk = chunk.neighbor(1, 0)
+      if (nextXChunk) {
+        if (nextXChunk.particles[0][y].get('type') == 'empty') {
+          nextXChunk.particles[0][y].set('type', 'sand')
+          this.set('type', 'empty')
+        }
+        return
+      } else {
+        return
       }
+    }
+
+    if (particles[x + 1][y].get('type') == 'empty') {
+      particles[x + 1][y].set('type', 'sand')
+      this.set('type', 'empty')
+      return
     }
   }
 

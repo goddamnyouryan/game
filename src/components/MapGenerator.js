@@ -11,7 +11,7 @@ class MapGenerator {
 
     for (let x = 0; x < this.numChunksX; x++) {
       for(let y = 0; y < this.numChunksY; y++) {
-        const chunk = new Chunk(x, y)
+        const chunk = new Chunk(x, y, this)
         this.chunks[x][y] = chunk
       }
     }
@@ -34,6 +34,12 @@ class MapGenerator {
     const relativeY = y - (chunkY * CHUNK_HEIGHT)
 
     return this.chunks[chunkX][chunkY].particles[relativeX][relativeY]
+  }
+
+  getChunk(x, y) {
+    const row = this.chunks[x]
+
+    if (row) { return row[y] }
   }
 }
 

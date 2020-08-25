@@ -12,6 +12,7 @@ const fps = document.createElement('div')
 
 const init = () => {
     map = new MapGenerator
+    console.log(map)
     addFPS()
 
     lastTime = Date.now()

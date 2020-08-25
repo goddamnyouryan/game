@@ -2,9 +2,10 @@ import { CHUNK_WIDTH, CHUNK_HEIGHT } from './constants'
 import Particle from './Particle'
 
 class Chunk {
-  constructor(x, y) {
+  constructor(x, y, map) {
     this.x = x
     this.y = y
+    this.map = map
     this.particles = Array.from(Array(CHUNK_WIDTH), () => new Array(CHUNK_HEIGHT))
 
     for (var x = 0; x < CHUNK_WIDTH; x++) {
@@ -18,9 +19,13 @@ class Chunk {
   update(chunkX, chunkY, chunks) {
     for (let x = CHUNK_WIDTH - 1 ; x >= 0; x--) {
       for (let y = CHUNK_HEIGHT - 1; y >= 0; y--) {
-          this.particles[x][y].update(x, y, this.particles)
+          this.particles[x][y].update(x, y, this.particles, this)
       }
     }
+  }
+
+  neighbor(dx = 0, dy = 0) {
+    return this.map.getChunk(this.x + dx, this.y + dy)
   }
 }
 

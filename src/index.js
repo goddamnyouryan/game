@@ -85,6 +85,11 @@ const updateParticles = () => {
   for (let x = map.numChunksX - 1; x >= 0; x--) {
     for (let y = map.numChunksY - 1; y >= 0; y--) {
       map.chunks[x][y].update()
+    }
+  }
+
+  for (let x = map.numChunksX - 1; x >= 0; x--) {
+    for (let y = map.numChunksY - 1; y >= 0; y--) {
       convertChunkToImage(x, y)
     }
   }

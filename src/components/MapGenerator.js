@@ -6,7 +6,7 @@ class MapGenerator {
     //this.numChunksX = Math.ceil(window.innerWidth / CHUNK_WIDTH)
     //this.numChunksY = Math.ceil(window.innerHeight / CHUNK_HEIGHT)
     this.numChunksX = 2
-    this.numChunksY = 2
+    this.numChunksY = 3
     this.chunks = Array.from(Array(this.numChunksX), () => new Array(this.numChunksY))
 
     for (let x = 0; x < this.numChunksX; x++) {

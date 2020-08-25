@@ -20,9 +20,9 @@ class Chunk {
     }
   }
 
-  update(chunkX, chunkY, chunks) {
-    for (let x = CHUNK_WIDTH - 1 ; x >= 0; x--) {
-      for (let y = CHUNK_HEIGHT - 1; y >= 0; y--) {
+  update() {
+    for (let x = CHUNK_WIDTH - 1 ; x > -1; x--) {
+      for (let y = CHUNK_HEIGHT - 1; y > -1; y--) {
           this.particles[x][y].update(x, y, this.particles, this)
       }
     }

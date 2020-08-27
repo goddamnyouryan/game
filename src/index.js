@@ -1,7 +1,7 @@
 import createCanvas from 'components/Canvas'
 import MapGenerator from 'components/MapGenerator'
 import { requestAnimFrame, setFPS } from 'components/Utils'
-import { CHUNK_WIDTH, CHUNK_HEIGHT } from 'components/constants'
+import { WIDTH, HEIGHT } from 'components/constants'
 
 import './style.css';
 
@@ -77,22 +77,39 @@ const convertChunkToImage = (chunkX, chunkY) => {
     }
   }
 
-  imageData.data.set(buf8);
+  imageData.data.set(buf8)
   ctx.putImageData(imageData, originX, originY)
 }
 
-const updateParticles = () => {
-  for (let x = map.numChunksX - 1; x >= 0; x--) {
-    for (let y = map.numChunksY - 1; y >= 0; y--) {
-      map.chunks[x][y].update()
+const convertParticlesToImage = () => {
+  let imageData = ctx.getImageData(0, 0, WIDTH, HEIGHT)
+  let buf = new ArrayBuffer(imageData.data.length)
+  let buf8 = new Uint8ClampedArray(buf)
+  let data = new Uint32Array(buf)
+
+  for (let x = 0; x < WIDTH; x++) {
+    for (let y = 0; y < HEIGHT; y++) {
+      var value = map.particles[y * HEIGHT + x].getColor()
+      data[y * WIDTH + x] =
+          (255   << 24) |
+          (value /2 << 16) |
+          (value <<  8) |
+          255;
     }
   }
 
-  for (let x = map.numChunksX - 1; x >= 0; x--) {
-    for (let y = map.numChunksY - 1; y >= 0; y--) {
-      convertChunkToImage(x, y)
+  imageData.data.set(buf8)
+  ctx.putImageData(imageData, 0, 0)
+}
+
+const updateParticles = () => {
+  for (let x = WIDTH - 1; x >= 0; x--) {
+    for (let y = HEIGHT -1; y >= 0; y--) {
+      map.particles[y * WIDTH + x].update(x, y, map.particles)
     }
   }
+
+  convertParticlesToImage()
 }
 
 init()

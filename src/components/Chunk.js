@@ -14,7 +14,7 @@ class Chunk {
   setupParticles() {
     for (var x = 0; x < CHUNK_WIDTH; x++) {
       for (var y = 0; y < CHUNK_HEIGHT; y++) {
-        const type = (Math.random() >= 0.5) ? 'sand' : 'empty';
+        const type = (Math.random() >= 0.5) ? 'sand' : 'empty'
         this.particles[x][y] = new Particle(type)
       }
     }

@@ -1,4 +1,4 @@
-import { CHUNK_WIDTH, CHUNK_HEIGHT } from 'components/constants'
+import { WIDTH, HEIGHT } from 'components/constants'
 
 class Particle {
   constructor(type) {
@@ -6,48 +6,39 @@ class Particle {
   }
 
   getColor() {
-    if (this.type == 'sand') {
+    if (this.isType('sand')) {
         return 16776960
-    } else if (this.type == 'empty') {
+    } else if (this.isType('empty')) {
         return 16777215
     }
   }
 
-  update(x, y, particles, chunk) {
-    if (this.get('type') == 'empty') {
+  update(x, y, particles) {
+    if (this.isType('empty')) {
       return
-    } else if (this.get('type') == 'sand') {
-      this.updateSand(x, y, particles, chunk)
+    } else if (this.isType('sand')) {
+      this.updateSand(x, y, particles)
     }
   }
 
-  updateSand(x, y, particles, chunk) {
-    if (x + 1 >= CHUNK_WIDTH) {
-      const nextYChunk = chunk.neighbor(0, 1)
-      if (nextYChunk) {
-        if (nextYChunk.particles[0][y].get('type') == 'empty') {
-          nextYChunk.particles[0][y].set('type', 'sand')
-          this.set('type', 'empty')
-        }
-        return
-      } else {
-        return
+  updateSand(x, y, particles) {
+    const below = particles[y * HEIGHT + x + WIDTH]
+
+    if (below) {
+      if (below.isType('empty')) {
+        below.setType(this.type)
+        this.setType('empty')
       }
-    }
-
-    if (particles[x + 1][y].get('type') == 'empty') {
-      particles[x + 1][y].set('type', 'sand')
-      this.set('type', 'empty')
       return
     }
   }
 
-  set(attr, val) {
-    this[attr] = val
+  isType(type) {
+    return this.type === type
   }
 
-  get(attr) {
-    return this[attr]
+  setType(type) {
+    this.type = type
   }
 }
 

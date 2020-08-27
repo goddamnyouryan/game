@@ -1,12 +1,26 @@
-import { CHUNK_WIDTH, CHUNK_HEIGHT } from './constants'
+import { WIDTH, HEIGHT } from './constants'
 import Chunk from './Chunk'
+import Particle from './Particle'
 
 class MapGenerator {
   constructor() {
+    this.particles = []
+
+    for (let x = 0; x < WIDTH; x++) {
+      for (let y = 0; y < HEIGHT; y++) {
+        const type = (Math.random() >= 0.5) ? 'sand' : 'empty';
+        const particle = new Particle(type)
+        this.particles[y * WIDTH + x] = particle
+      }
+    }
+  }
+
+  generateChunks() {
+    // not currently generating chunks, maybe a premature optimization
     //this.numChunksX = Math.ceil(window.innerWidth / CHUNK_WIDTH)
     //this.numChunksY = Math.ceil(window.innerHeight / CHUNK_HEIGHT)
-    this.numChunksX = 2
-    this.numChunksY = 3
+    this.numChunksX = 3
+    this.numChunksY = 2
     this.chunks = Array.from(Array(this.numChunksX), () => new Array(this.numChunksY))
 
     for (let x = 0; x < this.numChunksX; x++) {

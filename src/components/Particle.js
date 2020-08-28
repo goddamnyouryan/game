@@ -28,6 +28,19 @@ class Particle {
       if (below.isType('empty')) {
         below.setType(this.type)
         this.setType('empty')
+      } else {
+        const diff = Math.random() < 0.5 ? -1 : 1
+        const adjacent = particles[y * HEIGHT + x + WIDTH + diff]
+        if (adjacent && adjacent.isType('empty')) {
+          adjacent.setType(this.type)
+          this.setType('empty')
+        } else {
+          const other = particles[y * HEIGHT + x + WIDTH - diff]
+          if (other && other.isType('empty')) {
+            other.setType(this.type)
+            this.setType('empty')
+          }
+        }
       }
       return
     }
